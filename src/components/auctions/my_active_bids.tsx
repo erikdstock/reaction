@@ -6,18 +6,29 @@ import * as fonts from "../../assets/fonts"
 
 const NarrowContainer = styled.div`
   min-width: 260px
-  max-width: 400px
 `
 
 const Header = styled.div`
-  margin-bottom: 20px;
-  border-bottom: 1px solid ${colors.grayMedium}
-  ${fonts.primary.style}
+  margin-bottom: 14px;
+  border-bottom: 1px solid ${colors.grayMedium};
+  ${fonts.secondary.style}
+  font-size: 30px;
+  line-height: 1.1em;
 `
-
+// const GaramondS30 = styled.div`
+//   ${Fonts.garamond("s30")}
+//   margin-bottom: 20px;
+// `
 interface State {
   lotStandings?: any
 }
+
+const List = styled.ul`
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 1px dotted blue;
+`
 
 export default class MyActiveBids extends React.Component<null, State> {
   render() {
@@ -27,9 +38,9 @@ export default class MyActiveBids extends React.Component<null, State> {
         <Header>
           Your Active Bids
         </Header>
-        <ul>
+        <List style={{ "list-style-type": "none" }}>
           <ActiveBidListItem
-            title="Excellence on a Canvas"
+            title="Excellence on a Canvas with a title that just keeps going"
             href="#"
             imgRef="https://d32dm0rphc51dk.cloudfront.net/klv9TQbloHqFgYc0F5cIMg/square.jpg"
             artistName="Tony Smerhic"
@@ -39,7 +50,7 @@ export default class MyActiveBids extends React.Component<null, State> {
             displaySellingPrice="$1200"
             displayHighBidAmount="$1300"
           />
-        </ul>
+        </List>
         {/* myActiveBids.map((activeBid) => <ActiveBid activeBid={activeBid} />) */}
       </NarrowContainer>
     )
@@ -53,11 +64,6 @@ const ActiveBidListItemContainer = styled.a`
   display: flex;
   flex-direction: row;
   border: 1px dotted black
-`
-const Image = styled.img`
-  flex: none
-  width: 60px;
-  height: 60px;
 `
 
 interface ActiveBidProps extends React.HTMLProps<HTMLDivElement> {
@@ -83,13 +89,26 @@ const ActiveBidListItem: React.SFC<ActiveBidProps> = props =>
     </ActiveBidListItemContainer>
   </li>
 
+const Image = styled.img`
+  flex: none
+  width: 60px;
+  height: 60px;
+`
+// min-width: 0 makes overflow: elipsis work
 const LotInfoContainer = styled.div`
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   height: 100%;
   border: 1px solid red;
+  min-width: 0;
 `
+const TruncatedLine = styled.div`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`
+
 const CTAContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -109,9 +128,9 @@ interface LotInfoProps extends React.HTMLProps<HTMLDivElement> {
 const LotInfo: React.SFC<LotInfoProps> = props => {
   return (
     <LotInfoContainer>
-      <div>{props.lotLabel}</div>
-      <div>{props.title}</div>
-      <div>{props.lotStatus}</div>
+      <TruncatedLine>{props.lotLabel}</TruncatedLine>
+      <TruncatedLine>{props.title}</TruncatedLine>
+      <TruncatedLine>{props.lotStatus}</TruncatedLine>
     </LotInfoContainer>
   )
 }
