@@ -15,10 +15,7 @@ const Header = styled.div`
   font-size: 30px;
   line-height: 1.1em;
 `
-// const GaramondS30 = styled.div`
-//   ${Fonts.garamond("s30")}
-//   margin-bottom: 20px;
-// `
+
 interface State {
   lotStandings?: any
 }
@@ -27,7 +24,6 @@ const List = styled.ul`
   list-style-type: none;
   margin: 0;
   padding: 0;
-  border: 1px dotted blue;
 `
 
 export default class MyActiveBids extends React.Component<null, State> {
@@ -38,7 +34,7 @@ export default class MyActiveBids extends React.Component<null, State> {
         <Header>
           Your Active Bids
         </Header>
-        <List style={{ "list-style-type": "none" }}>
+        <List>
           <ActiveBidListItem
             title="Excellence on a Canvas with a title that just keeps going"
             href="#"
@@ -50,6 +46,17 @@ export default class MyActiveBids extends React.Component<null, State> {
             displaySellingPrice="$1200"
             displayHighBidAmount="$1300"
           />
+          <ActiveBidListItem
+            title="Excellence on a Canvas with a title that just keeps going"
+            href="#"
+            imgRef="https://d32dm0rphc51dk.cloudfront.net/klv9TQbloHqFgYc0F5cIMg/square.jpg"
+            artistName="Tony Smerhic"
+            lotLabel="Lot 13"
+            leading={false}
+            lotStatus="reserve_met"
+            displaySellingPrice="$1200"
+            displayHighBidAmount="$1300"
+          />
         </List>
         {/* myActiveBids.map((activeBid) => <ActiveBid activeBid={activeBid} />) */}
       </NarrowContainer>
@@ -57,14 +64,24 @@ export default class MyActiveBids extends React.Component<null, State> {
   }
 }
 
-const ActiveBidListItemContainer = styled.a`
+const ActiveBidListItemAnchor = styled.a`
   height: 77px;
   padding: 7px;
   width: 100%;
   display: flex;
   flex-direction: row;
-  border: 1px dotted black
+  border-bottom: 1px solid ${colors.grayMedium};
+  li:last-child & {
+    border-bottom: none
+  }
 `
+
+// const ActiveBidListItemContainer = styled.li`
+//   border-bottom: 1px solid ${colors.grayMedium};
+//   &:last-child {
+//     border-bottom: none;
+//   }
+// `
 
 interface ActiveBidProps extends React.HTMLProps<HTMLDivElement> {
   title: string
@@ -82,11 +99,11 @@ interface ActiveBidProps extends React.HTMLProps<HTMLDivElement> {
 
 const ActiveBidListItem: React.SFC<ActiveBidProps> = props =>
   <li>
-    <ActiveBidListItemContainer href={props.href}>
+    <ActiveBidListItemAnchor href={props.href}>
       <Image src={props.imgRef} />
       <LotInfo lotLabel={props.lotLabel} title={props.title} lotStatus={props.lotStatus} />
       <ActiveBidCTA isLeadingBidder reserveStatus="reserve_met" lotStatus="open" />
-    </ActiveBidListItemContainer>
+    </ActiveBidListItemAnchor>
   </li>
 
 const Image = styled.img`
@@ -94,7 +111,7 @@ const Image = styled.img`
   width: 60px;
   height: 60px;
 `
-// min-width: 0 makes overflow: elipsis work
+// min-width: 0 makes overflow: elipsis work on the child of a flex item
 const LotInfoContainer = styled.div`
   display: flex;
   flex: 1 1 auto;
