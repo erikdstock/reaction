@@ -5,17 +5,45 @@ import styled from "styled-components"
 import colors from "../../assets/colors"
 import * as fonts from "../../assets/fonts"
 
-const NarrowContainer = styled.div`
-  min-width: 260px
-`
+// const NarrowContainer = styled.div`
+//   min-width: 260px
+// `
 
-export interface LotStatusListProps extends React.HTMLProps<ArtworkMetadata> {
-  artwork: any
-  extended?: boolean
+export interface LotStatusProps extends React.HTMLProps<LotStatus> {
+  title: string
+  href: string
+  artistName: string
+  lotLabel: string
+  displaySellingPrice: string
+  displayHighBidAmount: string
+  imgRef?: string
+  bid?: object
 }
 
-export const LotStatusList = <div />
 
-const StyledLotStatusList = styled(LotStatusList)
+const LotStatusAnchor = styled.a`
+  display: flex;
+  width: 100%;
+  height: 77px;
+  border: 1px solid ${colors.grayMedium}
+`
 
-export default Relay.createContainer(StyledLotStatusList)
+const Image = styled.img`
+  flex: none
+  width: 60px;
+  height: 60px;
+`
+
+export class LotStatus extends React.Component<LotStatusProps, null> {
+  render() {
+    return (
+      <LotStatusAnchor href={this.props.href} >
+        <Image  />
+      </LotStatusAnchor>
+    )
+  }
+}
+
+const StyledLotStatus = styled(LotStatus)``
+
+export default Relay.createContainer(StyledLotStatus)
