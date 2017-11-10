@@ -76,13 +76,6 @@ const ActiveBidListItemAnchor = styled.a`
   }
 `
 
-// const ActiveBidListItemContainer = styled.li`
-//   border-bottom: 1px solid ${colors.grayMedium};
-//   &:last-child {
-//     border-bottom: none;
-//   }
-// `
-
 interface ActiveBidProps extends React.HTMLProps<HTMLDivElement> {
   title: string
   href: string
@@ -151,8 +144,6 @@ const LotInfo: React.SFC<LotInfoProps> = props => {
     </LotInfoContainer>
   )
 }
-
-// align-self: flex-end;
 
 interface CTAProps extends React.HTMLProps<HTMLDivElement> {
   isLeadingBidder: boolean
