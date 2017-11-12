@@ -3,7 +3,7 @@ import * as React from "react"
 
 import * as Artsy from "../../Components/Artsy"
 import { artsyNetworkLayer } from "../../Relay/config"
-import { LotStatus, LotStatusProps } from "../lotStatus"
+import { LotStatus, LotStatusProps } from "../LotStatus"
 
 // function LotStatusExample(props: LotStatusProps) {
 //   Relay.injectNetworkLayer(props.user)
@@ -18,7 +18,7 @@ storiesOf("Auctions/Lot Status", module).add("Default", () => {
         title="Big Painting"
         href="artsy.net/art/big-painting"
         artistName="Famous Painter"
-        imgRef="https://d32dm0rphc51dk.cloudfront.net/klv9TQbloHqFgYc0F5cIMg/square.jpg"        artistName="Famous Painter"
+        imgRef="https://d32dm0rphc51dk.cloudfront.net/klv9TQbloHqFgYc0F5cIMg/square.jpg"
         lotLabel="108"
         displaySellingPrice="$48,000"
         displayHighBidAmount="$55,000"

@@ -2,8 +2,8 @@ import PropTypes from "prop-types"
 import React from "react"
 import Relay from "react-relay"
 import styled from "styled-components"
-import colors from "../../assets/colors"
-import * as fonts from "../../assets/fonts"
+import colors from "../../Assets/Colors"
+import * as fonts from "../../Assets/Fonts"
 
 // const NarrowContainer = styled.div`
 //   min-width: 260px
