@@ -46,4 +46,5 @@ export class LotStatus extends React.Component<LotStatusProps, null> {
 
 const StyledLotStatus = styled(LotStatus)``
 
-export default Relay.createContainer(StyledLotStatus)
+export default LotStatus
+// export default Relay.createContainer(StyledLotStatus)
