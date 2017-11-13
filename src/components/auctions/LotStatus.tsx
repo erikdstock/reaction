@@ -83,7 +83,7 @@ const RightMatter = props => {
   return (
     <div>
       <div>{ lotStanding && 'bid' || 'nobid'}</div>
-      <BidButton {{href}}>Bid</BidButton>
+      <BidButton {...{href}}>Bid</BidButton>
     </div>
   )
 }
@@ -101,7 +101,7 @@ export class LotStatus extends React.Component<LotStatusProps, null> {
       <LotStatusContainer href={href} >
         <Image src={imgRef} />
         <StyledLotInfo {...infoProps} />
-        <StyledRightMatter {{href, lotStanding}} />
+        <StyledRightMatter {...{href, lotStanding}} />
       </LotStatusContainer>
     )
   }
