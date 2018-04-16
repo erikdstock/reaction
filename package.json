@@ -159,7 +159,7 @@
   "prettier": {
     "semi": false,
     "singleQuote": false,
-    "trailingComma": "es5",
+    "trailingComma": "none",
     "bracketSpacing": true
   },
   "jest": {
