@@ -1,12 +1,23 @@
-import Input from "../../../Input"
+import { FormikInput } from "../../FormikInput"
 import InvertedButton from "../../../Buttons/Inverted"
 import React, { Fragment } from "react"
 import Text from "../../../Text"
 import Title from "../../../Title"
 import colors from "../../../../Assets/Colors"
 import { Grid, Row, Col } from "react-styled-flexboxgrid"
-
-export const ShippingForm = (props: any) => {
+import { FormikProps } from "formik"
+/*
+                      <FormikInput
+                      formik={formikProps}
+                      input={{
+                        name: "fullName",
+                        placeholder: "Your Name",
+                        type: "text"
+                      }}
+                    />
+  */
+export const ShippingForm = (props: FormikProps<any> & {}) => {
+  debugger
   return (
     <Grid fluid>
       <Row>
@@ -33,7 +44,7 @@ export const ShippingForm = (props: any) => {
         </Col>
       </Row>
 
-      <AddressFormInputs />
+      <AddressFormInputs {...props} />
 
       <Row>
         <Col xs>
@@ -55,51 +66,78 @@ export const ShippingForm = (props: any) => {
 }
 
 // Imported in `PaymentForm` if addresss is different than shipping
-export const AddressFormInputs = ({
-  values = {},
-  touched = {},
-  errors = {},
-  handleChange,
-  handleBlur,
-}: any) => {
+export const AddressFormInputs = (props: FormikProps<any>) => {
+  debugger
+  const { values, touched, errors, handleChange, handleBlur } = props
   return (
     <Fragment>
       <Row>
         <Col xs>
-          <Input
+          <FormikInput
+            formik={{ values, errors, touched, handleBlur, handleChange }}
+            name="fullName"
             placeholder="Full Name"
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.fullName}
             block
           />
-          {touched.fullName && errors.fullName && <div>{errors.fullName}</div>}
         </Col>
       </Row>
       <Row>
         <Col xs>
-          <Input placeholder="Address Line 1" block />
+          <FormikInput
+            formik={{ values, errors, touched, handleBlur, handleChange }}
+            name="addressLine1"
+            placeholder="Address Line 1"
+            block
+          />
         </Col>
       </Row>
       <Row>
         <Col xs>
-          <Input placeholder="Address Line 2 (Optional)" block />
+          <FormikInput
+            formik={{ values, errors, touched, handleBlur, handleChange }}
+            name="addressLine2"
+            placeholder="Address Line 2 (Optional)"
+            block
+          />
         </Col>
       </Row>
       <Row>
         <Col xs={6}>
-          <Input placeholder="City" block />
+          <FormikInput
+            formik={{ values, errors, touched, handleBlur, handleChange }}
+            name="city"
+            placeholder="City"
+            block
+          />
         </Col>
         <Col xs={6}>
-          <Input placeholder="State / Province / Region" block />
+          <FormikInput
+            formik={{ values, errors, touched, handleBlur, handleChange }}
+            name="state"
+            placeholder="State / Province / Region"
+            block
+          />
         </Col>
       </Row>
       <Row>
         <Col xs={6}>
-          <Input placeholder="Postal Code" block />
+          <FormikInput
+            formik={{ values, errors, touched, handleBlur, handleChange }}
+            name="postalCode"
+            placeholder="Postal Code"
+            block
+          />
         </Col>
         <Col xs={6}>
-          <Input placeholder="Country" block />
+          <FormikInput
+            formik={{ values, errors, touched, handleBlur, handleChange }}
+            name="country"
+            placeholder="Country"
+            block
+          />
         </Col>
       </Row>
     </Fragment>

@@ -1,7 +1,6 @@
 import yup from "yup"
 
 // NOTE: This is super WIP...
-
 export const validationSchema = {
   fullName: yup.string().required("Full name is required"),
   addressLine1: yup.string().required("Address is required"),
@@ -22,6 +21,38 @@ export const validationSchema = {
   billingAddress: {
     // TODO: Only validate when sameAsShipping: false
   }
+}
+
+export const initialValues = {
+  // ShippingForm.jsx
+  fullName: "",
+  addressLine1: "",
+  addressLine2: "",
+  city: "",
+  state: "",
+  postalCode: "",
+  country: "",
+
+  // PaymentForm.jsx
+  nameOnCard: "",
+  cardNumber: "",
+  expiration: "",
+  securityCode: "",
+
+  sameAsShipping: true,
+
+  billingAddress: {
+    fullName: "",
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    country: ""
+  },
+
+  // ReviewForm
+  agreeToTerms: false
 }
 
 export const formikConfiguration = {

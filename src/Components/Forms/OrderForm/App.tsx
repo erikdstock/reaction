@@ -1,15 +1,14 @@
 import Nav from "../../Nav"
 import React, { Component } from "react"
 import Title from "../../Title"
-import compose from "lodash/fp/compose"
 import styled from "styled-components"
 import { PaymentForm } from "./Forms/PaymentForm"
 import { RenderProps as StepRenderProps } from "../../StepMarker"
 import { ReviewForm } from "./Forms/ReviewForm"
 import { ShippingForm } from "./Forms/ShippingForm"
 import { StepMarker } from "../../StepMarker"
-import { formikConfiguration, validationSchema } from "./formik"
-import { Formik, withFormik, FormikProps } from "formik"
+import { validationSchema, initialValues } from "./formik"
+import { Formik, FormikProps } from "formik"
 import Yup from "yup"
 import Wizard from "../../Wizard"
 
@@ -41,7 +40,7 @@ export const forms = [
   }
 ]
 
-class Form extends Component<any> {
+export class Form extends Component<any> {
   stepper: StepRenderProps
 
   registerStepper = (stepper: StepRenderProps) => {
@@ -67,23 +66,16 @@ class Form extends Component<any> {
   //     }
   //   })
   // }
+
   render() {
     const props = this.props
     return (
       <Formik
-        initialValues={props.values}
+        initialValues={initialValues}
         onSubmit={props.handleSubmit}
         validationSchema={Yup.object().shape(validationSchema)}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting
-        }: FormikProps<InputValues>) => (
+        {(formikProps: FormikProps<InputValues>) => (
           <Container>
             <Nav
               height={70}
@@ -102,10 +94,15 @@ class Form extends Component<any> {
               </StepMarker>
             </Nav>
 
-            <Wizard errors={errors}>
+            <Wizard errors={formikProps.errors}>
               {forms.map(({ component: FormComponent }, key) => (
                 <Step>
-                  <FormComponent />
+                  <FormComponent
+                    {...{ ...formikProps }}
+                    // key={key}
+                    // nextStep={() => this.nextStep(path)}
+                    // gotoStep={this.gotoStep}
+                  />
                 </Step>
               ))}
             </Wizard>
@@ -144,5 +141,5 @@ const FormContainer = styled.div`
 const StyledTitle = Title.extend`
   flex-grow: 1;
 `
-
-export const App = compose(withFormik(formikConfiguration))(Form)
+export const App = Form
+// export const App = compose(withFormik(formikConfiguration))(Form)
