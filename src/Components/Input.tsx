@@ -80,12 +80,12 @@ const BorderClassname = "border-container"
 class Input extends React.Component<InputProps, InputState> {
   state = {
     borderClasses: BorderClassname,
-    value: "",
+    value: ""
   }
 
   onFocus = e => {
     this.setState({
-      borderClasses: `${BorderClassname} focused`,
+      borderClasses: `${BorderClassname} focused`
     })
 
     if (this.props.onFocus) {
@@ -95,7 +95,7 @@ class Input extends React.Component<InputProps, InputState> {
 
   onBlur = e => {
     this.setState({
-      borderClasses: BorderClassname,
+      borderClasses: BorderClassname
     })
 
     if (this.props.onBlur) {
@@ -105,7 +105,7 @@ class Input extends React.Component<InputProps, InputState> {
 
   onChange = e => {
     this.setState({
-      value: e.currentTarget.value,
+      value: e.currentTarget.value
     })
   }
 
@@ -143,50 +143,5 @@ class Input extends React.Component<InputProps, InputState> {
     return <StyledInput {...this.props as any} />
   }
 }
-
-const StyledInput = styled.input`
-  ${borderedInput};
-  ${block(24)};
-`
-
-const BorderlessInput = styled.input`
-  ${fonts.secondary.style};
-  border: 0;
-  font-size: 17px;
-  outline: none;
-  flex: 1;
-`
-
-const StyledDiv = styled.div.attrs<{ hasLabel?: boolean }>({})`
-  ${borderedInput};
-  border: 0;
-  padding: ${p => (p.hasLabel ? "16px" : "12px")};
-  margin-right: 0;
-  display: flex;
-  position: relative;
-
-  & .border-container {
-    ${border};
-    z-index: -1;
-    position: absolute;
-    width: calc(100% - 4px);
-    height: calc(100% - 4px);
-    top: 0;
-    left: 0;
-  }
-`
-
-const Label = styled.label.attrs<{ out: boolean }>({})`
-  ${fonts.primary.style};
-  font-size: 8px;
-  position: absolute;
-  left: 17px;
-  top: 8px;
-  visibility: ${props => (props.out ? "hidden" : "visible")};
-  animation: ${props => (props.out ? fadeOut : fadeIn)} 0.2s linear;
-  transition: visibility 0.2s linear;
-`
-
-const BorderClassname = "border-container"
 
 export default Input

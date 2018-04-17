@@ -10,7 +10,7 @@ import {
   inputValidators,
   StyledFacebookButton,
   StyledInput as Input,
-  TOSCheckbox,
+  TOSCheckbox
 } from "../commonElements"
 import { FormComponentType, InputValues } from "../Types"
 
@@ -28,7 +28,7 @@ export const MobileRegisterForm: FormComponentType = props => {
         handleChange,
         handleBlur,
         handleSubmit,
-        isSubmitting,
+        isSubmitting
       }: FormikProps<InputValues>) => {
         return (
           <FormContainer onSubmit={handleSubmit}>

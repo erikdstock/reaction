@@ -2,7 +2,7 @@ import yup from "yup"
 
 // NOTE: This is super WIP...
 
-const validationSchema = {
+export const validationSchema = {
   fullName: yup.string().required("Full name is required"),
   addressLine1: yup.string().required("Address is required"),
   addressLine2: yup.string().notRequired(),
@@ -21,7 +21,7 @@ const validationSchema = {
 
   billingAddress: {
     // TODO: Only validate when sameAsShipping: false
-  },
+  }
 }
 
 export const formikConfiguration = {
@@ -50,16 +50,16 @@ export const formikConfiguration = {
       city: "",
       state: "",
       postalCode: "",
-      country: "",
+      country: ""
     },
 
     // ReviewForm
-    agreeToTerms: false,
+    agreeToTerms: false
   }),
 
   validationSchema,
 
   handleSubmit: (values, { props, setSubmitting, setErrors }) => {
     setSubmitting(true)
-  },
+  }
 }
