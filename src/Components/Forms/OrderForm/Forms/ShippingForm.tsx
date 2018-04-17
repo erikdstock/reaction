@@ -16,8 +16,8 @@ import { FormikProps } from "formik"
                       }}
                     />
   */
-export const ShippingForm = (props: FormikProps<any> & {}) => {
-  debugger
+export const ShippingForm = (props: any) => {
+  console.log("shippingForm props:", props)
   return (
     <Grid fluid>
       <Row>
@@ -67,7 +67,7 @@ export const ShippingForm = (props: FormikProps<any> & {}) => {
 
 // Imported in `PaymentForm` if addresss is different than shipping
 export const AddressFormInputs = (props: FormikProps<any>) => {
-  debugger
+  console.log("AddressFormInputs props", props)
   const { values, touched, errors, handleChange, handleBlur } = props
   return (
     <Fragment>

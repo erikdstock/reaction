@@ -7,14 +7,12 @@ import { RenderProps as StepRenderProps } from "../../StepMarker"
 import { ReviewForm } from "./Forms/ReviewForm"
 import { ShippingForm } from "./Forms/ShippingForm"
 import { StepMarker } from "../../StepMarker"
-import { validationSchema, initialValues } from "./formik"
+import { validationSchema, initialValues, InputValues } from "./formik"
 import { Formik, FormikProps } from "formik"
 import Yup from "yup"
 import Wizard from "../../Wizard"
 
 export const Step = props => <FormContainer>{props.children}</FormContainer>
-
-interface InputValues {}
 
 export const forms = [
   {
@@ -69,45 +67,48 @@ export class Form extends Component<any> {
 
   render() {
     const props = this.props
+    console.log("App", props)
     return (
       <Formik
         initialValues={initialValues}
         onSubmit={props.handleSubmit}
         validationSchema={Yup.object().shape(validationSchema)}
       >
-        {(formikProps: FormikProps<InputValues>) => (
-          <Container>
-            <Nav
-              height={70}
-              logoIcon="logotype"
-              logoLink="https://www.artsy.net"
-            >
-              <StyledTitle titleSize="xsmall">Secure Checkout</StyledTitle>
-
-              <StepMarker
-                style={{ marginTop: 15, marginRight: 15 }}
-                steps={forms}
+        {(formikProps: FormikProps<InputValues>) => {
+          console.log("App formikProps:", formikProps)
+          return (
+            <Container>
+              <Nav
+                height={70}
+                logoIcon="logotype"
+                logoLink="https://www.artsy.net"
               >
-                {stepper => {
-                  this.registerStepper(stepper)
-                }}
-              </StepMarker>
-            </Nav>
+                <StyledTitle titleSize="xsmall">Secure Checkout</StyledTitle>
 
-            <Wizard errors={formikProps.errors}>
-              {forms.map(({ component: FormComponent }, key) => (
-                <Step>
-                  <FormComponent
-                    {...{ ...formikProps }}
-                    // key={key}
-                    // nextStep={() => this.nextStep(path)}
-                    // gotoStep={this.gotoStep}
-                  />
-                </Step>
-              ))}
-            </Wizard>
-            <FormContainer>
-              {/* forms.map(({ path, component: FormComponent }, key) => {
+                <StepMarker
+                  style={{ marginTop: 15, marginRight: 15 }}
+                  steps={forms}
+                >
+                  {stepper => {
+                    this.registerStepper(stepper)
+                  }}
+                </StepMarker>
+              </Nav>
+
+              <Wizard errors={formikProps.errors}>
+                {forms.map(({ component: FormComponent }, key) => (
+                  <Step>
+                    <FormComponent
+                      {...{ ...formikProps }}
+                      // key={key}
+                      // nextStep={() => this.nextStep(path)}
+                      // gotoStep={this.gotoStep}
+                    />
+                  </Step>
+                ))}
+              </Wizard>
+              <FormContainer>
+                {/* forms.map(({ path, component: FormComponent }, key) => {
                 return (
                   <Route
                     path={path}
@@ -123,9 +124,10 @@ export class Form extends Component<any> {
                   />
                 )
               })*/}
-            </FormContainer>
-          </Container>
-        )}
+              </FormContainer>
+            </Container>
+          )
+        }}
       </Formik>
     )
   }

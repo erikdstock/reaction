@@ -4,7 +4,6 @@ import { fadeIn, fadeOut } from "../Assets/Animations"
 import * as fonts from "../Assets/Fonts"
 import { block } from "./Helpers"
 import { border, borderedInput } from "./Mixins"
-import { FormikProps } from "formik"
 
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   error?: boolean

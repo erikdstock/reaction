@@ -1,7 +1,31 @@
 import yup from "yup"
 
+export interface Inputs<T> {
+  fullName: T
+  addressLine1: T
+  addressLine2: T
+  city: T
+  state: T
+  postalCode: T
+  country: T
+
+  nameOnCard: T
+  cardNumber: T
+  expiration: T
+  securityCode: T
+  agreeToTerms: T
+
+  sameAsShipping: T
+
+  billingAddress: {
+    // TODO: Only validate when sameAsShipping: false
+  }
+}
+
+export interface InputValues extends Inputs<string | boolean> {}
+
 // NOTE: This is super WIP...
-export const validationSchema = {
+export const validationSchema: Inputs<yup.Schema<any>> = {
   fullName: yup.string().required("Full name is required"),
   addressLine1: yup.string().required("Address is required"),
   addressLine2: yup.string().notRequired(),
@@ -12,18 +36,18 @@ export const validationSchema = {
 
   nameOnCard: yup.string().required("Name is required"),
   cardNumber: yup.string().required("Card number is required"),
-  exipiration: yup.string().required("Exipration is required"),
+  expiration: yup.string().required("Exipration is required"),
   securityCode: yup.string().required("Security code is required"),
   agreeToTerms: yup.boolean().required("You must agree to terms"),
 
-  sameAsShipping: true,
+  sameAsShipping: yup.boolean(),
 
   billingAddress: {
     // TODO: Only validate when sameAsShipping: false
   }
 }
 
-export const initialValues = {
+export const initialValues: InputValues = {
   // ShippingForm.jsx
   fullName: "",
   addressLine1: "",
@@ -55,42 +79,42 @@ export const initialValues = {
   agreeToTerms: false
 }
 
-export const formikConfiguration = {
-  mapPropsToValues: () => ({
-    // ShippingForm.jsx
-    fullName: "",
-    addressLine1: "",
-    addressLine2: "",
-    city: "",
-    state: "",
-    postalCode: "",
-    country: "",
+// export const formikConfiguration = {
+//   mapPropsToValues: () => ({
+//     // ShippingForm.jsx
+//     fullName: "",
+//     addressLine1: "",
+//     addressLine2: "",
+//     city: "",
+//     state: "",
+//     postalCode: "",
+//     country: "",
 
-    // PaymentForm.jsx
-    nameOnCard: "",
-    cardNumber: "",
-    expiration: "",
-    securityCode: "",
+//     // PaymentForm.jsx
+//     nameOnCard: "",
+//     cardNumber: "",
+//     expiration: "",
+//     securityCode: "",
 
-    sameAsShipping: true,
+//     sameAsShipping: true,
 
-    billingAddress: {
-      fullName: "",
-      addressLine1: "",
-      addressLine2: "",
-      city: "",
-      state: "",
-      postalCode: "",
-      country: ""
-    },
+//     billingAddress: {
+//       fullName: "",
+//       addressLine1: "",
+//       addressLine2: "",
+//       city: "",
+//       state: "",
+//       postalCode: "",
+//       country: ""
+//     },
 
-    // ReviewForm
-    agreeToTerms: false
-  }),
+//     // ReviewForm
+//     agreeToTerms: false
+//   }),
 
-  validationSchema,
+//   validationSchema,
 
-  handleSubmit: (values, { props, setSubmitting, setErrors }) => {
-    setSubmitting(true)
-  }
-}
+//   handleSubmit: (values, { props, setSubmitting, setErrors }) => {
+//     setSubmitting(true)
+//   }
+// }
