@@ -66,39 +66,29 @@ export const ShippingForm = (props: any) => {
 }
 
 // Imported in `PaymentForm` if addresss is different than shipping
-export const AddressFormInputs = (props: FormikProps<any>) => {
-  console.log("AddressFormInputs props", props)
-  const { values, touched, errors, handleChange, handleBlur } = props
+export const AddressFormInputs = () => {
   return (
     <Fragment>
       <Row>
         <Col xs>
           <FormikInput
-            formik={{ values, errors, touched, handleBlur, handleChange }}
             name="fullName"
+            type="text"
             placeholder="Full Name"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.fullName}
             block
           />
         </Col>
       </Row>
       <Row>
         <Col xs>
-          <FormikInput
-            formik={{ values, errors, touched, handleBlur, handleChange }}
-            name="addressLine1"
-            placeholder="Address Line 1"
-            block
-          />
+          <FormikInput name="addressLine1" placeholder="Address Line 1" block />
         </Col>
       </Row>
       <Row>
         <Col xs>
           <FormikInput
-            formik={{ values, errors, touched, handleBlur, handleChange }}
             name="addressLine2"
+            type="text"
             placeholder="Address Line 2 (Optional)"
             block
           />
@@ -106,17 +96,12 @@ export const AddressFormInputs = (props: FormikProps<any>) => {
       </Row>
       <Row>
         <Col xs={6}>
-          <FormikInput
-            formik={{ values, errors, touched, handleBlur, handleChange }}
-            name="city"
-            placeholder="City"
-            block
-          />
+          <FormikInput name="city" type="text" placeholder="City" block />
         </Col>
         <Col xs={6}>
           <FormikInput
-            formik={{ values, errors, touched, handleBlur, handleChange }}
             name="state"
+            type="text"
             placeholder="State / Province / Region"
             block
           />
@@ -125,19 +110,14 @@ export const AddressFormInputs = (props: FormikProps<any>) => {
       <Row>
         <Col xs={6}>
           <FormikInput
-            formik={{ values, errors, touched, handleBlur, handleChange }}
+            type="text"
             name="postalCode"
             placeholder="Postal Code"
             block
           />
         </Col>
         <Col xs={6}>
-          <FormikInput
-            formik={{ values, errors, touched, handleBlur, handleChange }}
-            name="country"
-            placeholder="Country"
-            block
-          />
+          <FormikInput type="text" name="country" placeholder="Country" block />
         </Col>
       </Row>
     </Fragment>

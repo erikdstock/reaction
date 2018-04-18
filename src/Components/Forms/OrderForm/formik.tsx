@@ -44,7 +44,7 @@ export const validationSchema: Inputs<yup.Schema<any>> = {
 
   billingAddress: {
     // TODO: Only validate when sameAsShipping: false
-  }
+  },
 }
 
 export const initialValues: InputValues = {
@@ -72,11 +72,11 @@ export const initialValues: InputValues = {
     city: "",
     state: "",
     postalCode: "",
-    country: ""
+    country: "",
   },
 
   // ReviewForm
-  agreeToTerms: false
+  agreeToTerms: false,
 }
 
 // export const formikConfiguration = {

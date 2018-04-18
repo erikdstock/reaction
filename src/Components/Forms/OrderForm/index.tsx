@@ -3,7 +3,7 @@ import { App } from "./App"
 // import { BrowserRouter } from "react-router-dom"
 // import { StaticRouter } from "react-router"
 
-export const OrderForm: SFC = () => {
+export const OrderForm: SFC<{ onSubmit: any }> = ({ onSubmit }) => {
   // const isClient = typeof window !== "undefined"
   // const Router = isClient ? BrowserRouter : StaticRouter // TODO: Swap BrowserRouter with MemoryRouter to hide URLBar state
   // const basename = isClient && "/order2"
@@ -13,11 +13,5 @@ export const OrderForm: SFC = () => {
   //     <App />
   //   </Router>
   // )
-  return (
-    <App
-      onSubmit={values => {
-        console.log(`Submitting:`, values)
-      }}
-    />
-  )
+  return <App onSubmit={onSubmit} />
 }
