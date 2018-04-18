@@ -1,11 +1,11 @@
-import { FormikInput } from "../../FormikInput"
+import { FormikInput } from "../../Wizard/FormikInput"
 import InvertedButton from "../../../Buttons/Inverted"
 import React, { Fragment } from "react"
 import Text from "../../../Text"
 import Title from "../../../Title"
 import colors from "../../../../Assets/Colors"
 import { Grid, Row, Col } from "react-styled-flexboxgrid"
-import { FormikProps } from "formik"
+
 /*
                       <FormikInput
                       formik={formikProps}
