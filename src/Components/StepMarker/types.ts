@@ -1,9 +1,9 @@
 import { ReactNode } from "react"
 
-export interface StepProps {
+export interface MetaStep {
   label: string
-  isActive: boolean
-  isComplete: boolean
+  component: React.ComponentType
+  stepName: string
 }
 
 export interface RenderProps {
@@ -16,12 +16,15 @@ export interface RenderProps {
 
 export interface Props {
   children?: (renderProps: RenderProps) => ReactNode | void
-  steps: StepProps[]
+  steps: MetaStep[]
   style?: any
   onChange?: any
+  currentStepIndex: number
 }
 
 export interface State {
-  currentStep: number
-  steps: StepProps[]
+  currentStepIndex: number
+  steps: StepState[]
 }
+
+export type StepState = MetaStep & { isActive: boolean; isComplete: boolean }

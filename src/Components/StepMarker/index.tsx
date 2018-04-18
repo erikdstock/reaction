@@ -4,7 +4,7 @@ import Text from "../Text"
 import colors from "../../Assets/Colors"
 import styled from "styled-components"
 import { Fonts } from "../Publishing/Fonts"
-import { Props, State, StepProps } from "./types"
+import { Props, State, MetaStep, StepState } from "./types"
 import { isUndefined } from "lodash"
 
 export * from "./types"
@@ -21,67 +21,47 @@ export class StepMarker extends Component<Props, State> {
   }
 
   validate(props: Props) {
-    const isInvalid = props.steps.filter(step => step.isActive).length > 1
+    // const isInvalid = props.steps.filter(step => step.isActive).length > 1
 
-    if (isInvalid) {
-      console.error(
-        "(Components/StepMarker) Error: Step configuration has more than",
-        "one active item."
-      )
-    }
+    // if (isInvalid) {
+    //   console.error(
+    //     "(Components/StepMarker) Error: Step configuration has more than",
+    //     "one active item."
+    //   )
+    // }
   }
 
   computeStepState(propsOrState: State) {
-    let { currentStep, steps } = propsOrState
-
-    // If currentStep isn't passed in attempt to infer it from configuration
-    if (isUndefined(currentStep)) {
-      currentStep = steps.reduce((acc, step, index) => {
-        return step.isActive || step.isComplete ? index : acc
-      }, 0)
-    }
-
-    steps = steps.reduce((acc, step, index) => {
-      let stepToUpdate = {
-        ...step,
-        isActive: false,
-        isComplete: false,
-      }
-
-      if (index < currentStep) {
-        stepToUpdate.isComplete = true
-      }
-      if (index === currentStep) {
-        stepToUpdate.isActive = true
-      }
-
-      return acc.concat([stepToUpdate])
-    }, [])
-
+    let { currentStepIndex, steps } = propsOrState
+    const stepState = steps.map((step, i) => {
+      const isActive = i === this.props.currentStepIndex
+      const isComplete = i < this.props.currentStepIndex
+      return { ...step, isActive, isComplete }
+    })
     return {
-      currentStep,
-      steps,
+      steps: stepState,
+      currentStepIndex,
     }
   }
 
-  updateStep(currentStep) {
+  updateStep(currentStepIndex) {
     this.setState(
       this.computeStepState({
         ...this.state,
-        currentStep,
+        currentStepIndex,
       })
     )
   }
 
   nextStep = () => {
-    if (this.state.currentStep < this.props.steps.length) {
-      this.updateStep(this.state.currentStep + 1)
+    if (this.state.currentStepIndex < this.props.steps.length) {
+      this.updateStep(this.state.currentStepIndex + 1)
     }
   }
 
   previousStep = () => {
-    if (this.state.currentStep > 0) {
-      this.updateStep(this.state.currentStep - 1)
+    if (this.state.currentStepIndex > 0) {
+      this.updateStep(this.state.currentStepIndex - 1)
     }
   }
 
@@ -90,7 +70,7 @@ export class StepMarker extends Component<Props, State> {
   }
 
   isComplete = () => {
-    return this.state.currentStep === this.props.steps.length
+    return this.state.currentStepIndex === this.props.steps.length
   }
 
   render() {
@@ -132,7 +112,7 @@ const Steps = styled.div`
 `
 
 const Step = styled.div`
-  ${(props: StepProps) => {
+  ${(props: StepState ) => {
     const { isActive, isComplete } = props
     const circleSize = "10px" // + 2px border
     let bgColor = colors.white

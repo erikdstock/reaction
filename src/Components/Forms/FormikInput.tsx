@@ -20,7 +20,7 @@ export const FormikInput: (props: any) => any = props => {
       render={({
         field, // { name, value, onChange, onBlur }
         form: { touched, errors, values }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-        ...restProps,
+        ...restProps
       }) => (
         <div>
           <Input

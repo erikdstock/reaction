@@ -1,7 +1,11 @@
 import React from "react"
 import { Formik, FormikBag } from "formik"
 
-type FormikHandler = (values: any, bag?: FormikBag<any, any>) => any
+// Header bits from all over (clean up)
+import Nav from "../Nav"
+import { StyledTitle } from "./OrderForm/App"
+
+export type FormikHandler = (values: any, bag?: FormikBag<any, any>) => any
 interface FormStepProps {
   validate?: FormikHandler
 }
@@ -81,6 +85,22 @@ export class Wizard extends React.Component<Props, State> {
         onSubmit={this.handleSubmit}
         render={({ values, handleSubmit, isSubmitting, handleReset }) => (
           <form onSubmit={handleSubmit}>
+            {/* {true && (
+              <Nav //Render a header
+                height={70}
+                logoIcon="logotype"
+                logoLink="https://www.artsy.net"
+              >
+                <StyledTitle titleSize="xsmall">Secure Checkout</StyledTitle>
+
+                <StepMarker
+                  style={{ marginTop: 15, marginRight: 15 }}
+                  steps={forms}
+                  currentStepIndex={page}
+                >
+
+              </Nav>
+            )} */}
             {this.activePage}
             <div className="buttons">
               {page > 0 && (
