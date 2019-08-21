@@ -15,6 +15,7 @@ import * as Yup from "yup"
 import { CreditCardInput } from "Apps/Order/Components/CreditCardInput"
 import { ConditionsOfSaleCheckbox } from "Components/Auction/ConditionsOfSaleCheckbox"
 import { CountrySelect } from "Components/v2"
+import track, { useTracking } from "react-tracking"
 
 export const StyledCardElement = styled(CardElement)`
   width: 100%;
@@ -33,9 +34,8 @@ export interface FormValues {
   agreeToTerms: boolean
 }
 
-const InnerForm: React.FC<FormikProps<FormValues>> = props => {
-  // TODO: Figure out how to fire an event on form submission
-  // const { trackEvent } = useTracking()
+const InnerForm: React.FC<FormikProps<FormValues>> = track({})(props => {
+  const { trackEvent } = useTracking()
 
   const {
     touched,
@@ -46,16 +46,16 @@ const InnerForm: React.FC<FormikProps<FormValues>> = props => {
     values,
     setFieldValue,
     setFieldTouched,
-    // handleSubmit,
+    handleSubmit,
   } = props
 
-  // function onSubmit(event) {
-  //   trackEvent({ event: 'Clicked "Register to Bid"' })
-  //   handleSubmit(event)
-  // }
+  function onSubmit(event) {
+    trackEvent({ event: 'Clicked "Register to Bid"' })
+    handleSubmit(event)
+  }
 
   return (
-    <Form>
+    <Form onSubmit={onSubmit}>
       <Box mt={4}>
         <Serif weight="semibold" size="4t" mb={2}>
           Card Information
@@ -180,7 +180,7 @@ const InnerForm: React.FC<FormikProps<FormValues>> = props => {
       </Button>
     </Form>
   )
-}
+})
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
