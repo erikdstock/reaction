@@ -1,6 +1,7 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { Register_me$ref } from "./Register_me.graphql";
 import { Register_sale$ref } from "./Register_sale.graphql";
 import { redirects_me$ref } from "./redirects_me.graphql";
 import { redirects_sale$ref } from "./redirects_sale.graphql";
@@ -21,7 +22,7 @@ export type routes_RegisterQueryResponse = {
     }) | null;
     readonly me: ({
         readonly has_qualified_credit_cards: boolean | null;
-        readonly " $fragmentRefs": redirects_me$ref;
+        readonly " $fragmentRefs": redirects_me$ref & Register_me$ref;
     }) | null;
 };
 export type routes_RegisterQuery = {
@@ -51,6 +52,7 @@ query routes_RegisterQuery(
   }
   me {
     ...redirects_me
+    ...Register_me
     has_qualified_credit_cards
     __id
   }
@@ -71,11 +73,17 @@ fragment redirects_sale on Sale {
 
 fragment Register_sale on Sale {
   id
+  auction_state
   __id
 }
 
 fragment redirects_me on Me {
   has_qualified_credit_cards
+  __id
+}
+
+fragment Register_me on Me {
+  id
   __id
 }
 */
@@ -170,7 +178,7 @@ return {
   "operationKind": "query",
   "name": "routes_RegisterQuery",
   "id": null,
-  "text": "query routes_RegisterQuery(\n  $saleID: String!\n) {\n  sale(id: $saleID) {\n    ...redirects_sale\n    ...Register_sale\n    id\n    is_auction\n    is_registration_closed\n    is_preview\n    is_open\n    registrationStatus {\n      qualified_for_bidding\n      __id\n    }\n    __id\n  }\n  me {\n    ...redirects_me\n    has_qualified_credit_cards\n    __id\n  }\n}\n\nfragment redirects_sale on Sale {\n  id\n  is_auction\n  is_registration_closed\n  is_preview\n  is_open\n  registrationStatus {\n    qualified_for_bidding\n    __id\n  }\n  __id\n}\n\nfragment Register_sale on Sale {\n  id\n  __id\n}\n\nfragment redirects_me on Me {\n  has_qualified_credit_cards\n  __id\n}\n",
+  "text": "query routes_RegisterQuery(\n  $saleID: String!\n) {\n  sale(id: $saleID) {\n    ...redirects_sale\n    ...Register_sale\n    id\n    is_auction\n    is_registration_closed\n    is_preview\n    is_open\n    registrationStatus {\n      qualified_for_bidding\n      __id\n    }\n    __id\n  }\n  me {\n    ...redirects_me\n    ...Register_me\n    has_qualified_credit_cards\n    __id\n  }\n}\n\nfragment redirects_sale on Sale {\n  id\n  is_auction\n  is_registration_closed\n  is_preview\n  is_open\n  registrationStatus {\n    qualified_for_bidding\n    __id\n  }\n  __id\n}\n\nfragment Register_sale on Sale {\n  id\n  auction_state\n  __id\n}\n\nfragment redirects_me on Me {\n  has_qualified_credit_cards\n  __id\n}\n\nfragment Register_me on Me {\n  id\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -221,6 +229,11 @@ return {
             "name": "redirects_me",
             "args": null
           },
+          {
+            "kind": "FragmentSpread",
+            "name": "Register_me",
+            "args": null
+          },
           v9,
           v7
         ]
@@ -247,7 +260,14 @@ return {
           v5,
           v6,
           v8,
-          v7
+          v7,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "auction_state",
+            "args": null,
+            "storageKey": null
+          }
         ]
       },
       {
@@ -260,12 +280,13 @@ return {
         "plural": false,
         "selections": [
           v9,
-          v7
+          v7,
+          v2
         ]
       }
     ]
   }
 };
 })();
-(node as any).hash = '9f090f49979e7956be5f60517d199b8d';
+(node as any).hash = 'afd20790603ed14a0c1a5e6c2bf5430c';
 export default node;

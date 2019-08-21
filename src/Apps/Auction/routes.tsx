@@ -53,6 +53,7 @@ export const routes: RouteConfig[] = [
         }
         me {
           ...redirects_me
+          ...Register_me
 
           # TODO: We shouldn't need to inline this attribute
           has_qualified_credit_cards

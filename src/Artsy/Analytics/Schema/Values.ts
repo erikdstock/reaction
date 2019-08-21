@@ -5,6 +5,8 @@ export enum PageName {
   ArticlePage = "Article",
   ArtistPage = "Artist",
   ArtworkPage = "Artwork page",
+  AuctionBidPage = "Auction Bid page",
+  AuctionRegistrationPage = "Auction Registration page",
   CollectPage = "Collect page",
   CollectionPage = "Collection",
   SearchPage = "Search page",
@@ -22,6 +24,7 @@ export enum OwnerType {
   Article = "Article",
   Artist = "Artist",
   Artwork = "Artwork",
+  Auction = "Auction",
   Collection = "Collection",
   Consignment = "ConsignmentSubmission",
   Conversation = "Conversation",
@@ -51,7 +54,12 @@ export enum ActionType {
   ClickedBuyNow = "Clicked buy now",
   ClickedMakeOffer = "Clicked make offer",
   ClickedContactGallery = 'Clicked "Contact Gallery"',
+
+  /**
+   * A click on 'Buy Now' or 'Make offer' buttons.
+   */
   ClickedBid = 'Clicked "Bid"',
+  ClickedRegisterToBid = 'Clicked "Register"',
 
   /**
    * Triggers a pageview in force, skips segment
@@ -82,6 +90,13 @@ export enum ActionType {
    * A UI element that links out to another location
    */
   Link = "Link",
+
+  /**
+   * Auctions
+   */
+
+  PlacedMaxBid = "Placed Max Bid",
+  RegisteredToBid = "Registered To Bid",
 
   /**
    * A tap on a UI element using a finger-like input device.

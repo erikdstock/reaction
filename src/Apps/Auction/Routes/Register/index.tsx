@@ -1,10 +1,4 @@
 import { Box, Separator, Serif } from "@artsy/palette"
-import { Register_sale } from "__generated__/Register_sale.graphql"
-import { RegisterCreateBidderMutation } from "__generated__/RegisterCreateBidderMutation.graphql"
-import { RegisterCreateCreditCardMutation } from "__generated__/RegisterCreateCreditCardMutation.graphql"
-import { AppContainer } from "Apps/Components/AppContainer"
-import { trackPageViewWrapper } from "Apps/Order/Utils/trackPageViewWrapper"
-import { ErrorModal } from "Components/Modal/ErrorModal"
 import { FormikActions } from "formik"
 import React, { useState } from "react"
 import {
@@ -13,20 +7,32 @@ import {
   graphql,
   RelayProp,
 } from "react-relay"
+import track, { TrackingProp } from "react-tracking"
 import { data as sd } from "sharify"
+
+import { Register_me } from "__generated__/Register_me.graphql"
+import { Register_sale } from "__generated__/Register_sale.graphql"
+import { RegisterCreateBidderMutation } from "__generated__/RegisterCreateBidderMutation.graphql"
+import { RegisterCreateCreditCardMutation } from "__generated__/RegisterCreateCreditCardMutation.graphql"
+
+import { FormValues } from "Apps/Auction/Components/RegistrationForm"
+import { StripeWrappedRegistrationForm } from "Apps/Auction/Components/RegistrationForm"
+import { AppContainer } from "Apps/Components/AppContainer"
+import { trackPageViewWrapper } from "Apps/Order/Utils/trackPageViewWrapper"
+import { ErrorModal } from "Components/Modal/ErrorModal"
 import createLogger from "Utils/logger"
-import { StripeWrappedRegistrationForm } from "../../Components/RegistrationForm"
-import { FormValues } from "../../Components/RegistrationForm"
 
 const logger = createLogger("Apps/Auction/Routes/Register")
 
 interface RegisterProps {
   sale: Register_sale
-  relay?: RelayProp
+  me: Register_me
+  relay: RelayProp
+  tracking: TrackingProp
 }
 
 export const RegisterRoute: React.FC<RegisterProps> = props => {
-  const { relay, sale } = props
+  const { relay, sale, tracking } = props
   const [showErrorModal, setShowErrorModal] = useState(false)
 
   function createBidder() {
@@ -112,6 +118,8 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
         createBidder().then(() => {
           setSubmitting(false)
 
+          tracking.trackEvent({ event: "Registration submitted" })
+
           window.location.href = `${sd.APP_URL}/auction/${
             sale.id
           }/confirm-registration`
@@ -119,6 +127,8 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
       })
       .catch(error => {
         logger.error(error)
+
+        tracking.trackEvent({ event: "Registration failed" })
 
         setSubmitting(false)
         setShowErrorModal(true)
@@ -142,11 +152,33 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
   )
 }
 
+const TrackingWrappedRegisterRoute: React.FC<RegisterProps> = props => {
+  const { me, sale } = props
+
+  const Component = track({
+    userId: me.id,
+    properties: {
+      auction_slug: sale.id,
+      auction_state: sale.auction_state,
+      user_id: me.id,
+      bidder_id: me.id,
+    },
+  })(RegisterRoute)
+
+  return <Component {...props} />
+}
+
 export const RegisterFragmentContainer = createFragmentContainer(
-  trackPageViewWrapper(RegisterRoute),
+  trackPageViewWrapper(TrackingWrappedRegisterRoute),
   {
     sale: graphql`
       fragment Register_sale on Sale {
+        id
+        auction_state
+      }
+    `,
+    me: graphql`
+      fragment Register_me on Me {
         id
       }
     `,

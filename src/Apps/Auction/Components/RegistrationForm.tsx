@@ -1,7 +1,4 @@
 import { Box, Button, Flex, Input, Sans, Serif } from "@artsy/palette"
-import { CreditCardInput } from "Apps/Order/Components/CreditCardInput"
-import { ConditionsOfSaleCheckbox } from "Components/Auction/ConditionsOfSaleCheckbox"
-import { CountrySelect } from "Components/v2"
 import { Form, Formik, FormikActions, FormikProps } from "formik"
 import React, { useEffect, useState } from "react"
 import {
@@ -14,6 +11,10 @@ import {
 import { data as sd } from "sharify"
 import styled from "styled-components"
 import * as Yup from "yup"
+
+import { CreditCardInput } from "Apps/Order/Components/CreditCardInput"
+import { ConditionsOfSaleCheckbox } from "Components/Auction/ConditionsOfSaleCheckbox"
+import { CountrySelect } from "Components/v2"
 
 export const StyledCardElement = styled(CardElement)`
   width: 100%;
@@ -33,6 +34,9 @@ export interface FormValues {
 }
 
 const InnerForm: React.FC<FormikProps<FormValues>> = props => {
+  // TODO: Figure out how to fire an event on form submission
+  // const { trackEvent } = useTracking()
+
   const {
     touched,
     errors,
@@ -42,7 +46,13 @@ const InnerForm: React.FC<FormikProps<FormValues>> = props => {
     values,
     setFieldValue,
     setFieldTouched,
+    // handleSubmit,
   } = props
+
+  // function onSubmit(event) {
+  //   trackEvent({ event: 'Clicked "Register to Bid"' })
+  //   handleSubmit(event)
+  // }
 
   return (
     <Form>

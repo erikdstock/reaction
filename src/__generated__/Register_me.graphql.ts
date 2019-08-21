@@ -1,20 +1,19 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-declare const _Register_sale$ref: unique symbol;
-export type Register_sale$ref = typeof _Register_sale$ref;
-export type Register_sale = {
+declare const _Register_me$ref: unique symbol;
+export type Register_me$ref = typeof _Register_me$ref;
+export type Register_me = {
     readonly id: string;
-    readonly auction_state: string | null;
-    readonly " $refType": Register_sale$ref;
+    readonly " $refType": Register_me$ref;
 };
 
 
 
 const node: ConcreteFragment = {
   "kind": "Fragment",
-  "name": "Register_sale",
-  "type": "Sale",
+  "name": "Register_me",
+  "type": "Me",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
@@ -28,18 +27,11 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "auction_state",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
       "name": "__id",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = '508e1390c3516733867b5a9cf90a6a3f';
+(node as any).hash = '6252a43fa617a5b5d2d66ceffe124a21';
 export default node;
