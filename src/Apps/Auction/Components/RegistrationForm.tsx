@@ -13,7 +13,6 @@ import styled from "styled-components"
 import * as Yup from "yup"
 
 import { CreditCardInput } from "Apps/Order/Components/CreditCardInput"
-import { track } from "Artsy"
 import { ConditionsOfSaleCheckbox } from "Components/Auction/ConditionsOfSaleCheckbox"
 import { CountrySelect } from "Components/v2"
 import { TrackingProp, useTracking } from "react-tracking"
@@ -35,14 +34,8 @@ export interface FormValues {
   agreeToTerms: boolean
 }
 
-const InnerForm: React.FC<
-  FormikProps<FormValues> & { tracking: TrackingProp }
-> = props => {
-  const {
-    tracking: { trackEvent },
-  } = props
-
-  // const { trackEvent } = useTracking()
+const InnerForm: React.FC<FormikProps<FormValues>> = props => {
+  const { trackEvent } = useTracking()
 
   const {
     touched,
@@ -213,71 +206,68 @@ export interface RegistrationFormProps
   ) => void
 }
 
-// TODO: There is already a track at the Register module level so maybe we don't want another here?
-// maybe we need to wrap the story file in its own track() so it can get the necessary context.
-export const RegistrationForm: React.FC<RegistrationFormProps> = track()(
-  props => {
-    console.warn("RF: ", props.tracking)
-
-    const initialValues = {
-      name: "",
-      street: "",
-      country: "",
-      city: "",
-      creditCard: undefined,
-      state: "",
-      postalCode: "",
-      telephone: "",
-      agreeToTerms: false,
-    }
-
-    function onSubmit(values: FormValues, actions: FormikActions<object>) {
-      const address = {
-        name: values.name,
-        address_line1: values.street,
-        address_country: values.country,
-        address_city: values.city,
-        address_state: values.state,
-        address_zip: values.postalCode,
-      }
-
-      const { setFieldError, setSubmitting } = actions
-      const { stripe } = props
-
-      stripe.createToken(address).then(({ error, token }) => {
-        if (error) {
-          setFieldError("creditCard", error.message)
-          setSubmitting(false)
-        } else {
-          props.onSubmit(values, actions, token)
-        }
-      })
-    }
-
-    return (
-      <Box maxWidth={550}>
-        <Serif size="4" color="black100">
-          Please enter your credit card information below. The name on your
-          Artsy account must match the name on the card, and a valid credit card
-          is required in order to bid.
-        </Serif>
-        <Serif size="4" mt={2} color="black100">
-          Registration is free. Artsy will never charge this card without your
-          permission, and you are not required to use this card to pay if you
-          win.
-        </Serif>
-        <Box mt={2}>
-          <Formik
-            initialValues={initialValues}
-            onSubmit={onSubmit}
-            validationSchema={validationSchema}
-            render={p => <InnerForm tracking={props.tracking} {...p} />}
-          />
-        </Box>
-      </Box>
-    )
+export const RegistrationForm: React.FC<RegistrationFormProps> = props => {
+  const initialValues: FormValues = {
+    name: "",
+    street: "",
+    country: "",
+    city: "",
+    creditCard: undefined,
+    state: "",
+    postalCode: "",
+    telephone: "",
+    agreeToTerms: false,
   }
-)
+
+  function onSubmit(values: FormValues, actions: FormikActions<object>) {
+    const address = {
+      name: values.name,
+      address_line1: values.street,
+      address_country: values.country,
+      address_city: values.city,
+      address_state: values.state,
+      address_zip: values.postalCode,
+    }
+
+    const { setFieldError, setSubmitting } = actions
+    const { stripe } = props
+
+    stripe.createToken(address).then(({ error, token }) => {
+      if (error) {
+        setFieldError("creditCard", error.message)
+        setSubmitting(false)
+      } else {
+        props.onSubmit(values, actions, token)
+      }
+    })
+  }
+
+  return (
+    <Box maxWidth={550}>
+      <Serif size="4" color="black100">
+        Please enter your credit card information below. The name on your Artsy
+        account must match the name on the card, and a valid credit card is
+        required in order to bid.
+      </Serif>
+      <Serif size="4" mt={2} color="black100">
+        Registration is free. Artsy will never charge this card without your
+        permission, and you are not required to use this card to pay if you win.
+      </Serif>
+      <Box mt={2}>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={onSubmit}
+          validationSchema={validationSchema}
+          /* `component` prop rather than `render={InnerForm}` is required here
+           * because Formik's internals will turn this render function into a
+           * a class, breaking hooks
+           */
+          component={InnerForm}
+        />
+      </Box>
+    </Box>
+  )
+}
 
 export const StripeWrappedRegistrationForm: React.FC<
   RegistrationFormProps

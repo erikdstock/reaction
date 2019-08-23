@@ -7,7 +7,7 @@ import {
   graphql,
   RelayProp,
 } from "react-relay"
-import track, { TrackingProp } from "react-tracking"
+import { TrackingProp } from "react-tracking"
 import { data as sd } from "sharify"
 
 import { Register_me } from "__generated__/Register_me.graphql"
@@ -19,6 +19,7 @@ import { FormValues } from "Apps/Auction/Components/RegistrationForm"
 import { StripeWrappedRegistrationForm } from "Apps/Auction/Components/RegistrationForm"
 import { AppContainer } from "Apps/Components/AppContainer"
 import { trackPageViewWrapper } from "Apps/Order/Utils/trackPageViewWrapper"
+import { track } from "Artsy"
 import { ErrorModal } from "Components/Modal/ErrorModal"
 import createLogger from "Utils/logger"
 
@@ -153,9 +154,10 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
 }
 
 const TrackingWrappedRegisterRoute: React.FC<RegisterProps> = props => {
+  // previous track() args
+  /*
   const { me, sale } = props
-
-  const Component = track({
+{
     userId: me.id,
     properties: {
       auction_slug: sale.id,
@@ -163,7 +165,9 @@ const TrackingWrappedRegisterRoute: React.FC<RegisterProps> = props => {
       user_id: me.id,
       bidder_id: me.id,
     },
-  })(RegisterRoute)
+  }
+*/
+  const Component = track()(RegisterRoute)
 
   return <Component {...props} />
 }
