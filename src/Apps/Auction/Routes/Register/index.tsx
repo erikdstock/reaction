@@ -20,6 +20,7 @@ import { StripeWrappedRegistrationForm } from "Apps/Auction/Components/Registrat
 import { AppContainer } from "Apps/Components/AppContainer"
 import { trackPageViewWrapper } from "Apps/Order/Utils/trackPageViewWrapper"
 import { track } from "Artsy"
+import * as Schema from "Artsy/Analytics/Schema"
 import { ErrorModal } from "Components/Modal/ErrorModal"
 import createLogger from "Utils/logger"
 
@@ -154,20 +155,9 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
 }
 
 const TrackingWrappedRegisterRoute: React.FC<RegisterProps> = props => {
-  // previous track() args
-  /*
-  const { me, sale } = props
-{
-    userId: me.id,
-    properties: {
-      auction_slug: sale.id,
-      auction_state: sale.auction_state,
-      user_id: me.id,
-      bidder_id: me.id,
-    },
-  }
-*/
-  const Component = track()(RegisterRoute)
+  const Component = track({
+    context_page: Schema.PageName.AuctionRegistrationPage,
+  })(RegisterRoute)
 
   return <Component {...props} />
 }
