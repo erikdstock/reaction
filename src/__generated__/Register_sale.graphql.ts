@@ -5,6 +5,7 @@ declare const _Register_sale$ref: unique symbol;
 export type Register_sale$ref = typeof _Register_sale$ref;
 export type Register_sale = {
     readonly id: string;
+    readonly _id: string;
     readonly auction_state: string | null;
     readonly " $refType": Register_sale$ref;
 };
@@ -28,6 +29,13 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "_id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "auction_state",
       "args": null,
       "storageKey": null
@@ -41,5 +49,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '508e1390c3516733867b5a9cf90a6a3f';
+(node as any).hash = 'b984c60476bf35843846c2351323b2e8';
 export default node;

@@ -12,11 +12,16 @@ import { data as sd } from "sharify"
 
 import { Register_me } from "__generated__/Register_me.graphql"
 import { Register_sale } from "__generated__/Register_sale.graphql"
-import { RegisterCreateBidderMutation } from "__generated__/RegisterCreateBidderMutation.graphql"
+import {
+  RegisterCreateBidderMutation,
+  RegisterCreateBidderMutationResponse,
+} from "__generated__/RegisterCreateBidderMutation.graphql"
 import { RegisterCreateCreditCardMutation } from "__generated__/RegisterCreateCreditCardMutation.graphql"
 
-import { FormValues } from "Apps/Auction/Components/RegistrationForm"
-import { StripeWrappedRegistrationForm } from "Apps/Auction/Components/RegistrationForm"
+import {
+  FormValues,
+  StripeWrappedRegistrationForm,
+} from "Apps/Auction/Components/RegistrationForm"
 import { AppContainer } from "Apps/Components/AppContainer"
 import { trackPageViewWrapper } from "Apps/Order/Utils/trackPageViewWrapper"
 import { track } from "Artsy"
@@ -34,14 +39,37 @@ interface RegisterProps {
 }
 
 export const RegisterRoute: React.FC<RegisterProps> = props => {
-  const { relay, sale, tracking } = props
+  const { me, relay, sale, tracking } = props
   const [showErrorModal, setShowErrorModal] = useState(false)
+
+  const commonAnalytics = {
+    auction_slug: sale.id,
+    auction_state: sale.auction_state,
+    sale_id: sale._id,
+    user_id: me.id,
+  }
+
+  function trackRegistrationFailed(errors: string[]) {
+    tracking.trackEvent({
+      event: "Registration failed to submit",
+      error_messages: errors,
+      ...commonAnalytics,
+    })
+  }
+
+  function trackRegistrationSuccess(bidderId: string) {
+    tracking.trackEvent({
+      event: "Registration submitted",
+      bidderId,
+      ...commonAnalytics,
+    })
+  }
 
   function createBidder() {
     return new Promise(async (resolve, reject) => {
       commitMutation<RegisterCreateBidderMutation>(relay.environment, {
-        onCompleted: (data, errors) => {
-          resolve()
+        onCompleted: data => {
+          resolve(data)
         },
         onError: error => {
           reject(error)
@@ -50,6 +78,9 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
           mutation RegisterCreateBidderMutation($input: CreateBidderInput!) {
             createBidder(input: $input) {
               clientMutationId
+              bidder {
+                id
+              }
             }
           }
         `,
@@ -117,10 +148,10 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
 
     createCreditCard(token.id)
       .then(() => {
-        createBidder().then(() => {
+        createBidder().then((data: RegisterCreateBidderMutationResponse) => {
           setSubmitting(false)
 
-          tracking.trackEvent({ event: "Registration submitted" })
+          trackRegistrationSuccess(data.createBidder.bidder.id)
 
           window.location.href = `${sd.APP_URL}/auction/${
             sale.id
@@ -129,8 +160,14 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
       })
       .catch(error => {
         logger.error(error)
+        let errorMessage
+        if (error.message) {
+          errorMessage = error.message
+        } else if (typeof error === "string") {
+          errorMessage = error
+        }
 
-        tracking.trackEvent({ event: "Registration failed" })
+        trackRegistrationFailed([errorMessage])
 
         setSubmitting(false)
         setShowErrorModal(true)
@@ -142,7 +179,10 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
       <Box maxWidth={550} px={[2, 0]} mx="auto" my={[1, 0]}>
         <Serif size="10">Register to Bid on Artsy</Serif>
         <Separator mt={1} mb={2} />
-        <StripeWrappedRegistrationForm onSubmit={onSubmit} />
+        <StripeWrappedRegistrationForm
+          onSubmit={onSubmit}
+          trackSubmissionErrors={trackRegistrationFailed}
+        />
       </Box>
       <ErrorModal
         show={showErrorModal}
@@ -168,6 +208,7 @@ export const RegisterFragmentContainer = createFragmentContainer(
     sale: graphql`
       fragment Register_sale on Sale {
         id
+        _id
         auction_state
       }
     `,

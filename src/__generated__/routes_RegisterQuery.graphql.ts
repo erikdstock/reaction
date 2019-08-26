@@ -73,6 +73,7 @@ fragment redirects_sale on Sale {
 
 fragment Register_sale on Sale {
   id
+  _id
   auction_state
   __id
 }
@@ -178,7 +179,7 @@ return {
   "operationKind": "query",
   "name": "routes_RegisterQuery",
   "id": null,
-  "text": "query routes_RegisterQuery(\n  $saleID: String!\n) {\n  sale(id: $saleID) {\n    ...redirects_sale\n    ...Register_sale\n    id\n    is_auction\n    is_registration_closed\n    is_preview\n    is_open\n    registrationStatus {\n      qualified_for_bidding\n      __id\n    }\n    __id\n  }\n  me {\n    ...redirects_me\n    ...Register_me\n    has_qualified_credit_cards\n    __id\n  }\n}\n\nfragment redirects_sale on Sale {\n  id\n  is_auction\n  is_registration_closed\n  is_preview\n  is_open\n  registrationStatus {\n    qualified_for_bidding\n    __id\n  }\n  __id\n}\n\nfragment Register_sale on Sale {\n  id\n  auction_state\n  __id\n}\n\nfragment redirects_me on Me {\n  has_qualified_credit_cards\n  __id\n}\n\nfragment Register_me on Me {\n  id\n  __id\n}\n",
+  "text": "query routes_RegisterQuery(\n  $saleID: String!\n) {\n  sale(id: $saleID) {\n    ...redirects_sale\n    ...Register_sale\n    id\n    is_auction\n    is_registration_closed\n    is_preview\n    is_open\n    registrationStatus {\n      qualified_for_bidding\n      __id\n    }\n    __id\n  }\n  me {\n    ...redirects_me\n    ...Register_me\n    has_qualified_credit_cards\n    __id\n  }\n}\n\nfragment redirects_sale on Sale {\n  id\n  is_auction\n  is_registration_closed\n  is_preview\n  is_open\n  registrationStatus {\n    qualified_for_bidding\n    __id\n  }\n  __id\n}\n\nfragment Register_sale on Sale {\n  id\n  _id\n  auction_state\n  __id\n}\n\nfragment redirects_me on Me {\n  has_qualified_credit_cards\n  __id\n}\n\nfragment Register_me on Me {\n  id\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -261,6 +262,13 @@ return {
           v6,
           v8,
           v7,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "_id",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "ScalarField",
             "alias": null,

@@ -35,8 +35,6 @@ export interface FormValues {
 }
 
 const InnerForm: React.FC<FormikProps<FormValues>> = props => {
-  const { trackEvent } = useTracking()
-
   const {
     touched,
     errors,
@@ -48,7 +46,8 @@ const InnerForm: React.FC<FormikProps<FormValues>> = props => {
     setFieldTouched,
     handleSubmit,
   } = props
-
+  // TODO: I believe this event is intended for when starting the flow, not submitting the form.
+  const { trackEvent } = useTracking()
   function onSubmit(event) {
     trackEvent({ event: 'Clicked "Register to Bid"' })
     handleSubmit(event)
@@ -196,6 +195,28 @@ const validationSchema = Yup.object().shape({
   ),
 })
 
+type TrackErrors = (errors: string[]) => void
+
+/*
+  This component exists only to capture formik's renderProps and track form
+  submission events.
+ */
+const OnSubmitValidationError: React.FC<{
+  cb: TrackErrors
+  formikProps: FormikProps<FormValues>
+}> = props => {
+  const { cb, formikProps } = props
+
+  const effect = () => {
+    if (formikProps.isSubmitting && !formikProps.isValid) {
+      cb(Object.values(formikProps.errors))
+    }
+  }
+  React.useEffect(effect, [formikProps.isSubmitting])
+
+  return null
+}
+
 export interface RegistrationFormProps
   extends ReactStripeElements.InjectedStripeProps {
   tracking?: TrackingProp
@@ -204,6 +225,7 @@ export interface RegistrationFormProps
     formikActions: FormikActions<object>,
     token: stripe.Token
   ) => void
+  trackSubmissionErrors: TrackErrors
 }
 
 export const RegistrationForm: React.FC<RegistrationFormProps> = props => {
@@ -235,6 +257,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = props => {
     stripe.createToken(address).then(({ error, token }) => {
       if (error) {
         setFieldError("creditCard", error.message)
+        props.trackSubmissionErrors([error.message])
         setSubmitting(false)
       } else {
         props.onSubmit(values, actions, token)
@@ -258,11 +281,15 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = props => {
           initialValues={initialValues}
           onSubmit={onSubmit}
           validationSchema={validationSchema}
-          /* `component` prop rather than `render={InnerForm}` is required here
-           * because Formik's internals will turn this render function into a
-           * a class, breaking hooks
-           */
-          component={InnerForm}
+          render={(formikProps: FormikProps<FormValues>) => (
+            <>
+              <OnSubmitValidationError
+                cb={props.trackSubmissionErrors}
+                formikProps={formikProps}
+              />
+              <InnerForm {...formikProps} />
+            </>
+          )}
         />
       </Box>
     </Box>

@@ -63,6 +63,7 @@ describe("RegistrationForm", () => {
   let wrapper: ReactWrapper
   const props: RegistrationFormProps = {
     onSubmit,
+    trackSubmissionErrors: jest.fn(),
   }
 
   beforeAll(() => {
