@@ -33,6 +33,7 @@ query RegisterApp_Test_Query {
 
 fragment Register_sale on Sale {
   id
+  _id
   auction_state
   __id
 }
@@ -71,7 +72,7 @@ return {
   "operationKind": "query",
   "name": "RegisterApp_Test_Query",
   "id": null,
-  "text": "query RegisterApp_Test_Query {\n  sale(id: \"whatever.\") {\n    ...Register_sale\n    __id\n  }\n  me {\n    ...Register_me\n    __id\n  }\n}\n\nfragment Register_sale on Sale {\n  id\n  auction_state\n  __id\n}\n\nfragment Register_me on Me {\n  id\n  __id\n}\n",
+  "text": "query RegisterApp_Test_Query {\n  sale(id: \"whatever.\") {\n    ...Register_sale\n    __id\n  }\n  me {\n    ...Register_me\n    __id\n  }\n}\n\nfragment Register_sale on Sale {\n  id\n  _id\n  auction_state\n  __id\n}\n\nfragment Register_me on Me {\n  id\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -131,6 +132,13 @@ return {
         "plural": false,
         "selections": [
           v2,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "_id",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "ScalarField",
             "alias": null,

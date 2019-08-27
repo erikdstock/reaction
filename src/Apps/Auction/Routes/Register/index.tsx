@@ -179,6 +179,7 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
       <Box maxWidth={550} px={[2, 0]} mx="auto" my={[1, 0]}>
         <Serif size="10">Register to Bid on Artsy</Serif>
         <Separator mt={1} mb={2} />
+
         <StripeWrappedRegistrationForm
           onSubmit={onSubmit}
           trackSubmissionErrors={trackRegistrationFailed}
@@ -202,14 +203,14 @@ const TrackingWrappedRegisterRoute: React.FC<RegisterProps> = props => {
   return <Component {...props} />
 }
 
-export const RegisterFragmentContainer = createFragmentContainer(
+export const RegisterRouteFragmentContainer = createFragmentContainer(
   trackPageViewWrapper(TrackingWrappedRegisterRoute),
   {
     sale: graphql`
       fragment Register_sale on Sale {
         id
         _id
-        auction_state
+        auction_state: status
       }
     `,
     me: graphql`

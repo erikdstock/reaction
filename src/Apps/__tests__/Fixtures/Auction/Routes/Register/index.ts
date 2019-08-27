@@ -30,7 +30,8 @@ export const RegisterAppResponseFixture: {
 } = {
   sale: {
     auction_state: "open",
-    id: "whatever.",
+    id: "whatever-slug",
+    _id: "abcde",
     " $refType": undefined,
   },
   me: {

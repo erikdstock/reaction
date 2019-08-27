@@ -4,14 +4,14 @@ import React from "react"
 import { graphql } from "react-relay"
 import createLogger from "Utils/logger"
 import { findRedirect } from "./redirects"
-import { RegisterFragmentContainer } from "./Routes/Register"
+import { RegisterRouteFragmentContainer } from "./Routes/Register"
 
 const logger = createLogger("Apps/Auction/routes")
 
 export const routes: RouteConfig[] = [
   {
     path: "/auction-registration2/:saleID",
-    Component: RegisterFragmentContainer,
+    Component: RegisterRouteFragmentContainer,
     render: ({ Component, props }) => {
       if (Component && props) {
         const { location, sale, me } = props as any

@@ -15,7 +15,7 @@ import * as Yup from "yup"
 import { CreditCardInput } from "Apps/Order/Components/CreditCardInput"
 import { ConditionsOfSaleCheckbox } from "Components/Auction/ConditionsOfSaleCheckbox"
 import { CountrySelect } from "Components/v2"
-import { TrackingProp, useTracking } from "react-tracking"
+import { TrackingProp } from "react-tracking"
 
 export const StyledCardElement = styled(CardElement)`
   width: 100%;
@@ -44,17 +44,10 @@ const InnerForm: React.FC<FormikProps<FormValues>> = props => {
     values,
     setFieldValue,
     setFieldTouched,
-    handleSubmit,
   } = props
-  // TODO: I believe this event is intended for when starting the flow, not submitting the form.
-  const { trackEvent } = useTracking()
-  function onSubmit(event) {
-    trackEvent({ event: 'Clicked "Register to Bid"' })
-    handleSubmit(event)
-  }
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form>
       <Box mt={4}>
         <Serif weight="semibold" size="4t" mb={2}>
           Card Information
@@ -208,11 +201,16 @@ const OnSubmitValidationError: React.FC<{
   const { cb, formikProps } = props
 
   const effect = () => {
-    if (formikProps.isSubmitting && !formikProps.isValid) {
+    if (
+      formikProps.submitCount > 0 &&
+      !formikProps.isSubmitting &&
+      !formikProps.isValid
+    ) {
       cb(Object.values(formikProps.errors))
+      formikProps.setSubmitting(false)
     }
   }
-  React.useEffect(effect, [formikProps.isSubmitting])
+  React.useEffect(effect, [formikProps.submitCount, formikProps.isSubmitting])
 
   return null
 }

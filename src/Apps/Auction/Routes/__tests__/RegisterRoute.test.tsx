@@ -1,15 +1,14 @@
 // Begun from example in Register_analytics.test.tsx
-import {
-  RegisterAppResponseFixture,
-  RegisterQueryResponseFixture,
-} from "Apps/__tests__/Fixtures/Auction/Routes/Register"
+import { RegisterAppResponseFixture } from "Apps/__tests__/Fixtures/Auction/Routes/Register"
 import { createTestEnv } from "DevTools/createTestEnv"
 import { expectOne, RootTestPage } from "DevTools/RootTestPage"
 import { graphql } from "react-relay"
-import { RegisterFragmentContainer, RegisterRoute } from "../Register"
+import { RegisterRouteFragmentContainer } from "../Register"
+
+jest.unmock("react-relay")
 
 const { buildPage } = createTestEnv({
-  Component: RegisterFragmentContainer,
+  Component: RegisterRouteFragmentContainer,
   defaultData: RegisterAppResponseFixture,
   TestPage: class RegistrationTestPage extends RootTestPage {
     get submitButton() {
