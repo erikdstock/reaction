@@ -3,8 +3,8 @@
 import { ConcreteRequest } from "relay-runtime";
 import { Register_me$ref } from "./Register_me.graphql";
 import { Register_sale$ref } from "./Register_sale.graphql";
-export type RegisterApp_Test_QueryVariables = {};
-export type RegisterApp_Test_QueryResponse = {
+export type RegisterRoute_Test_QueryVariables = {};
+export type RegisterRoute_Test_QueryResponse = {
     readonly sale: ({
         readonly " $fragmentRefs": Register_sale$ref;
     }) | null;
@@ -12,15 +12,15 @@ export type RegisterApp_Test_QueryResponse = {
         readonly " $fragmentRefs": Register_me$ref;
     }) | null;
 };
-export type RegisterApp_Test_Query = {
-    readonly response: RegisterApp_Test_QueryResponse;
-    readonly variables: RegisterApp_Test_QueryVariables;
+export type RegisterRoute_Test_Query = {
+    readonly response: RegisterRoute_Test_QueryResponse;
+    readonly variables: RegisterRoute_Test_QueryVariables;
 };
 
 
 
 /*
-query RegisterApp_Test_Query {
+query RegisterRoute_Test_Query {
   sale(id: "whatever.") {
     ...Register_sale
     __id
@@ -34,7 +34,7 @@ query RegisterApp_Test_Query {
 fragment Register_sale on Sale {
   id
   _id
-  auction_state
+  auction_state: status
   __id
 }
 
@@ -70,13 +70,13 @@ v2 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "RegisterApp_Test_Query",
+  "name": "RegisterRoute_Test_Query",
   "id": null,
-  "text": "query RegisterApp_Test_Query {\n  sale(id: \"whatever.\") {\n    ...Register_sale\n    __id\n  }\n  me {\n    ...Register_me\n    __id\n  }\n}\n\nfragment Register_sale on Sale {\n  id\n  _id\n  auction_state\n  __id\n}\n\nfragment Register_me on Me {\n  id\n  __id\n}\n",
+  "text": "query RegisterRoute_Test_Query {\n  sale(id: \"whatever.\") {\n    ...Register_sale\n    __id\n  }\n  me {\n    ...Register_me\n    __id\n  }\n}\n\nfragment Register_sale on Sale {\n  id\n  _id\n  auction_state: status\n  __id\n}\n\nfragment Register_me on Me {\n  id\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "RegisterApp_Test_Query",
+    "name": "RegisterRoute_Test_Query",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -119,7 +119,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "RegisterApp_Test_Query",
+    "name": "RegisterRoute_Test_Query",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -141,8 +141,8 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "auction_state",
+            "alias": "auction_state",
+            "name": "status",
             "args": null,
             "storageKey": null
           },
@@ -166,5 +166,5 @@ return {
   }
 };
 })();
-(node as any).hash = '8eae81a43bcc16ce43a6e8c72039b79b';
+(node as any).hash = '7152c7518d962448e9565f59f431da85';
 export default node;

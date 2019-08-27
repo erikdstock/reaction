@@ -13,14 +13,18 @@ export const routes: RouteConfig[] = [
     path: "/auction-registration2/:saleID",
     Component: RegisterRouteFragmentContainer,
     render: ({ Component, props }) => {
+      console.log("top", Boolean(Component), props)
       if (Component && props) {
+        console.log("inside")
         const { location, sale, me } = props as any
 
         if (!sale) {
           return <ErrorPage code={404} />
         }
 
+        console.log("b4")
         const redirect = findRedirect(sale, me)
+        console.log("after")
 
         if (redirect) {
           logger.warn(
@@ -40,23 +44,23 @@ export const routes: RouteConfig[] = [
           ...redirects_sale
           ...Register_sale
 
-          # TODO: We shouldn't need to inline these attributes
-          id
-          is_auction
-          is_registration_closed
-          is_preview
-          is_open
-          is_auction
-          registrationStatus {
-            qualified_for_bidding
-          }
+          # # TODO: We shouldn't need to inline these attributes
+          # id
+          # is_auction
+          # is_registration_closed
+          # is_preview
+          # is_open
+          # is_auction
+          # registrationStatus {
+          #   qualified_for_bidding
+          # }
         }
         me {
           ...redirects_me
           ...Register_me
 
-          # TODO: We shouldn't need to inline this attribute
-          has_qualified_credit_cards
+          # # TODO: We shouldn't need to inline this attribute
+          # has_qualified_credit_cards
         }
       }
     `,

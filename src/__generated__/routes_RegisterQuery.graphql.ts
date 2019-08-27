@@ -10,18 +10,9 @@ export type routes_RegisterQueryVariables = {
 };
 export type routes_RegisterQueryResponse = {
     readonly sale: ({
-        readonly id: string;
-        readonly is_auction: boolean | null;
-        readonly is_registration_closed: boolean | null;
-        readonly is_preview: boolean | null;
-        readonly is_open: boolean | null;
-        readonly registrationStatus: ({
-            readonly qualified_for_bidding: boolean | null;
-        }) | null;
         readonly " $fragmentRefs": redirects_sale$ref & Register_sale$ref;
     }) | null;
     readonly me: ({
-        readonly has_qualified_credit_cards: boolean | null;
         readonly " $fragmentRefs": redirects_me$ref & Register_me$ref;
     }) | null;
 };
@@ -39,21 +30,11 @@ query routes_RegisterQuery(
   sale(id: $saleID) {
     ...redirects_sale
     ...Register_sale
-    id
-    is_auction
-    is_registration_closed
-    is_preview
-    is_open
-    registrationStatus {
-      qualified_for_bidding
-      __id
-    }
     __id
   }
   me {
     ...redirects_me
     ...Register_me
-    has_qualified_credit_cards
     __id
   }
 }
@@ -74,7 +55,7 @@ fragment redirects_sale on Sale {
 fragment Register_sale on Sale {
   id
   _id
-  auction_state
+  auction_state: status
   __id
 }
 
@@ -109,68 +90,14 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_auction",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_registration_closed",
-  "args": null,
-  "storageKey": null
-},
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_preview",
-  "args": null,
-  "storageKey": null
-},
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_open",
-  "args": null,
-  "storageKey": null
-},
-v7 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v8 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "registrationStatus",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "Bidder",
-  "plural": false,
-  "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "qualified_for_bidding",
-      "args": null,
-      "storageKey": null
-    },
-    v7
-  ]
-},
-v9 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "has_qualified_credit_cards",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -179,7 +106,7 @@ return {
   "operationKind": "query",
   "name": "routes_RegisterQuery",
   "id": null,
-  "text": "query routes_RegisterQuery(\n  $saleID: String!\n) {\n  sale(id: $saleID) {\n    ...redirects_sale\n    ...Register_sale\n    id\n    is_auction\n    is_registration_closed\n    is_preview\n    is_open\n    registrationStatus {\n      qualified_for_bidding\n      __id\n    }\n    __id\n  }\n  me {\n    ...redirects_me\n    ...Register_me\n    has_qualified_credit_cards\n    __id\n  }\n}\n\nfragment redirects_sale on Sale {\n  id\n  is_auction\n  is_registration_closed\n  is_preview\n  is_open\n  registrationStatus {\n    qualified_for_bidding\n    __id\n  }\n  __id\n}\n\nfragment Register_sale on Sale {\n  id\n  _id\n  auction_state\n  __id\n}\n\nfragment redirects_me on Me {\n  has_qualified_credit_cards\n  __id\n}\n\nfragment Register_me on Me {\n  id\n  __id\n}\n",
+  "text": "query routes_RegisterQuery(\n  $saleID: String!\n) {\n  sale(id: $saleID) {\n    ...redirects_sale\n    ...Register_sale\n    __id\n  }\n  me {\n    ...redirects_me\n    ...Register_me\n    __id\n  }\n}\n\nfragment redirects_sale on Sale {\n  id\n  is_auction\n  is_registration_closed\n  is_preview\n  is_open\n  registrationStatus {\n    qualified_for_bidding\n    __id\n  }\n  __id\n}\n\nfragment Register_sale on Sale {\n  id\n  _id\n  auction_state: status\n  __id\n}\n\nfragment redirects_me on Me {\n  has_qualified_credit_cards\n  __id\n}\n\nfragment Register_me on Me {\n  id\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -207,13 +134,7 @@ return {
             "name": "Register_sale",
             "args": null
           },
-          v2,
-          v3,
-          v4,
-          v5,
-          v6,
-          v8,
-          v7
+          v2
         ]
       },
       {
@@ -235,8 +156,7 @@ return {
             "name": "Register_me",
             "args": null
           },
-          v9,
-          v7
+          v2
         ]
       }
     ]
@@ -255,13 +175,55 @@ return {
         "concreteType": "Sale",
         "plural": false,
         "selections": [
-          v2,
           v3,
-          v4,
-          v5,
-          v6,
-          v8,
-          v7,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_auction",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_registration_closed",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_preview",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_open",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "registrationStatus",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Bidder",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "qualified_for_bidding",
+                "args": null,
+                "storageKey": null
+              },
+              v2
+            ]
+          },
+          v2,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -271,8 +233,8 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": null,
-            "name": "auction_state",
+            "alias": "auction_state",
+            "name": "status",
             "args": null,
             "storageKey": null
           }
@@ -287,14 +249,20 @@ return {
         "concreteType": "Me",
         "plural": false,
         "selections": [
-          v9,
-          v7,
-          v2
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "has_qualified_credit_cards",
+            "args": null,
+            "storageKey": null
+          },
+          v2,
+          v3
         ]
       }
     ]
   }
 };
 })();
-(node as any).hash = 'afd20790603ed14a0c1a5e6c2bf5430c';
+(node as any).hash = 'ddad0825ab95c130017188b4da275e89';
 export default node;

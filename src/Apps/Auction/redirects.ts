@@ -19,7 +19,8 @@ export function findRedirect(
   sale: redirects_sale,
   me: redirects_me
 ): Redirect | null {
-  let redirect
+  let redirect = null
+  // throw new Error("oh heck")
   if (me.has_qualified_credit_cards) {
     redirect = {
       path: `/auction/${sale.id}/registration-flow`,

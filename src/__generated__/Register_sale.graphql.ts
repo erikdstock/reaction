@@ -35,8 +35,8 @@ const node: ConcreteFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": null,
-      "name": "auction_state",
+      "alias": "auction_state",
+      "name": "status",
       "args": null,
       "storageKey": null
     },
@@ -49,5 +49,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'b984c60476bf35843846c2351323b2e8';
+(node as any).hash = 'c4cab91d877e74bf98881ffc7837dee8';
 export default node;

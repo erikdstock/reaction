@@ -16,7 +16,7 @@ const { buildPage } = createTestEnv({
     }
   },
   query: graphql`
-    query RegisterApp_Test_Query {
+    query RegisterRoute_Test_Query {
       sale(id: "whatever.") {
         ...Register_sale
       }
