@@ -53,22 +53,24 @@ describe("Auction Registration Analytics ", () => {
     await flushPromiseQueue()
 
     expect(mockTrack).toHaveBeenCalledWith({
-      auction_slug: "whatever-slug",
-      context_page: "Auction Registration page",
-      auction_state: "open",
-      error_messages: [
-        "Name is required",
-        "Address is required",
-        "Country is required",
-        "City is required",
-        "State is required",
-        "Postal code is required",
-        "Telephone is required",
-        "You must agree to the Conditions of Sale",
-      ],
       event: "Registration failed to submit",
-      sale_id: "abcde",
-      user_id: "1",
+      context_page: "Auction Registration page",
+      properties: {
+        auction_slug: "whatever-slug",
+        auction_state: "open",
+        error_messages: [
+          "Name is required",
+          "Address is required",
+          "Country is required",
+          "City is required",
+          "State is required",
+          "Postal code is required",
+          "Telephone is required",
+          "You must agree to the Conditions of Sale",
+        ],
+        sale_id: "abcde",
+        user_id: "1",
+      },
     })
   })
   xit("tracks form submission success", async () => {

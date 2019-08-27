@@ -6,7 +6,7 @@ export type Register_sale$ref = typeof _Register_sale$ref;
 export type Register_sale = {
     readonly id: string;
     readonly _id: string;
-    readonly auction_state: string | null;
+    readonly status: string | null;
     readonly " $refType": Register_sale$ref;
 };
 
@@ -35,7 +35,7 @@ const node: ConcreteFragment = {
     },
     {
       "kind": "ScalarField",
-      "alias": "auction_state",
+      "alias": null,
       "name": "status",
       "args": null,
       "storageKey": null
@@ -49,5 +49,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'c4cab91d877e74bf98881ffc7837dee8';
+(node as any).hash = '6cb810d08c8eb385cdf81e6fa877f372';
 export default node;

@@ -42,9 +42,9 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
   const { me, relay, sale, tracking } = props
   const [showErrorModal, setShowErrorModal] = useState(false)
 
-  const commonAnalytics = {
+  const commonProperties = {
     auction_slug: sale.id,
-    auction_state: sale.auction_state,
+    auction_state: sale.status,
     sale_id: sale._id,
     user_id: me.id,
   }
@@ -52,8 +52,10 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
   function trackRegistrationFailed(errors: string[]) {
     tracking.trackEvent({
       event: "Registration failed to submit",
-      error_messages: errors,
-      ...commonAnalytics,
+      properties: {
+        error_messages: errors,
+        ...commonProperties,
+      },
     })
   }
 
@@ -61,7 +63,7 @@ export const RegisterRoute: React.FC<RegisterProps> = props => {
     tracking.trackEvent({
       event: "Registration submitted",
       bidderId,
-      ...commonAnalytics,
+      ...commonProperties,
     })
   }
 
@@ -210,7 +212,7 @@ export const RegisterRouteFragmentContainer = createFragmentContainer(
       fragment Register_sale on Sale {
         id
         _id
-        auction_state: status
+        status
       }
     `,
     me: graphql`

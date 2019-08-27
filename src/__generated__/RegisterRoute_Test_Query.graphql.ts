@@ -34,7 +34,7 @@ query RegisterRoute_Test_Query {
 fragment Register_sale on Sale {
   id
   _id
-  auction_state: status
+  status
   __id
 }
 
@@ -72,7 +72,7 @@ return {
   "operationKind": "query",
   "name": "RegisterRoute_Test_Query",
   "id": null,
-  "text": "query RegisterRoute_Test_Query {\n  sale(id: \"whatever.\") {\n    ...Register_sale\n    __id\n  }\n  me {\n    ...Register_me\n    __id\n  }\n}\n\nfragment Register_sale on Sale {\n  id\n  _id\n  auction_state: status\n  __id\n}\n\nfragment Register_me on Me {\n  id\n  __id\n}\n",
+  "text": "query RegisterRoute_Test_Query {\n  sale(id: \"whatever.\") {\n    ...Register_sale\n    __id\n  }\n  me {\n    ...Register_me\n    __id\n  }\n}\n\nfragment Register_sale on Sale {\n  id\n  _id\n  status\n  __id\n}\n\nfragment Register_me on Me {\n  id\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -141,7 +141,7 @@ return {
           },
           {
             "kind": "ScalarField",
-            "alias": "auction_state",
+            "alias": null,
             "name": "status",
             "args": null,
             "storageKey": null

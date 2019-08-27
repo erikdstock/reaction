@@ -29,7 +29,7 @@ export const RegisterAppResponseFixture: {
   me: Register_me
 } = {
   sale: {
-    auction_state: "open",
+    status: "open",
     id: "whatever-slug",
     _id: "abcde",
     " $refType": undefined,

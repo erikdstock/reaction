@@ -1,5 +1,5 @@
 import { routes } from "Apps/Auction/routes"
-import { createMockNetworkLayer2 } from "DevTools"
+import { createMockNetworkLayer2 } from "DevTools/createMockNetworkLayer"
 import { createRender } from "found"
 import { Resolver } from "found-relay"
 import getFarceResult from "found/lib/server/getFarceResult"
@@ -9,7 +9,21 @@ import {
   RegisterQueryResponseFixture as Fixture,
 } from "../../__tests__/Fixtures/Auction/Routes/Register"
 
+jest.mock("react-stripe-elements", () => ({
+  Elements: ({ children }) => children,
+  StripeProvider: ({ children }) => children,
+  CardElement: () => null,
+  injectStripe: x => x,
+}))
+
 describe("Auction/redirects", () => {
+  beforeAll(() => {
+    // @ts-ignore
+    // tslint:disable-next-line:no-empty
+    window.Stripe = () => {}
+
+    window.sd = { STRIPE_PUBLISHABLE_KEY: "" }
+  })
   async function render(url, mockData) {
     const network = createMockNetworkLayer2({ mockData })
     const source = new RecordSource()
@@ -41,7 +55,7 @@ describe("Auction/redirects", () => {
     expect(redirect).toBeUndefined
   })
 
-  it("redirects to the auction registration modal if the user has a qualified credit card", async () => {
+  it.only("redirects to the auction registration modal if the user has a qualified credit card", async () => {
     const result = await render(
       `/auction-registration2/${Fixture.sale.id}`,
       mockResolver({
