@@ -93,7 +93,7 @@ describe("Routes/ConfirmBid", () => {
     jest.resetAllMocks()
   })
 
-  it("successfully places a bid and redirect to artwork page", async () => {
+  it("successfully places a bid and redirects to artwork page if the user is winning", async () => {
     const env = setupTestEnv()
     const page = await env.buildPage()
 
@@ -130,7 +130,7 @@ describe("Routes/ConfirmBid", () => {
     expect(window.location.assign).toHaveBeenCalledWith(
       `https://example.com/auction/${
         ConfirmBidQueryResponseFixture.artwork.saleArtwork.sale.id
-      }/artwork/${ConfirmBidQueryResponseFixture.artwork.id}`
+      }/artwork/${ConfirmBidQueryResponseFixture.artwork.id}/confirm-bid`
     )
   })
 
@@ -168,6 +168,10 @@ describe("Routes/ConfirmBid", () => {
     })
     expect(mockPostEvent).toHaveBeenCalledTimes(1)
     expect(window.location.assign).not.toHaveBeenCalled()
+  })
+
+  it("successfully places a bid and shows 'You've been outbid, increase your bid' if the user is not winning", () => {
+    pending("not implemented")
   })
 
   it("requires user to agree to terms", async () => {

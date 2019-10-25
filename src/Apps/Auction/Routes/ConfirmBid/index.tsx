@@ -11,6 +11,7 @@ import { trackPageViewWrapper } from "Apps/Order/Utils/trackPageViewWrapper"
 import { track } from "Artsy"
 import * as Schema from "Artsy/Analytics/Schema"
 import { FormikActions } from "formik"
+
 import qs from "qs"
 import React from "react"
 import { Title } from "react-head"
@@ -21,6 +22,7 @@ import {
   RelayProp,
 } from "react-relay"
 import { TrackingProp } from "react-tracking"
+import { PayloadError } from "relay-runtime"
 import { data as sd } from "sharify"
 import { get } from "Utils/get"
 import createLogger from "Utils/logger"
@@ -33,6 +35,11 @@ interface ConfirmBidProps {
   relay: RelayProp
   location: Location
   tracking: TrackingProp
+}
+
+interface ResultsAndErrors {
+  results: ConfirmBidCreateBidderPositionMutationResponse
+  errors: PayloadError[]
 }
 
 export const ConfirmBidRoute: React.FC<ConfirmBidProps> = props => {
@@ -54,12 +61,12 @@ export const ConfirmBidRoute: React.FC<ConfirmBidProps> = props => {
   }
 
   function createBidderPosition(maxBidAmountCents: number) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise<ResultsAndErrors>(async (resolve, reject) => {
       commitMutation<ConfirmBidCreateBidderPositionMutation>(
         props.relay.environment,
         {
-          onCompleted: data => {
-            resolve(data)
+          onCompleted: (results, errors) => {
+            resolve({ results, errors })
           },
           onError: error => {
             reject(error)
@@ -132,31 +139,51 @@ export const ConfirmBidRoute: React.FC<ConfirmBidProps> = props => {
     })
   }
 
-  function handleSubmit(
+  async function handleSubmit(
     values: { selectedBid: number },
     actions: FormikActions<object>
   ) {
     const bidderId = sale.registrationStatus.id
-    createBidderPosition(Number(values.selectedBid))
-      .then((data: ConfirmBidCreateBidderPositionMutationResponse) => {
-        if (data.createBidderPosition.result.status !== "SUCCESS") {
-          trackConfirmBidFailed(bidderId, [
-            "ConfirmBidCreateBidderPositionMutation failed",
-          ])
-        } else {
-          const positionId = data.createBidderPosition.result.position.id
-          trackConfirmBidSuccess(positionId, bidderId)
+    try {
+      // TODO:: where to handle/check for these errors
+      // are they the same as the !SUCCESS below?
+      // other errors like in the catch down below, etc
+      // can they all be handled by the same function? Some may require
+      // an error message, others a modal, etc.
+      const { results, errors } = await createBidderPosition(
+        Number(values.selectedBid)
+      )
+
+      if (results.createBidderPosition.result.status !== "SUCCESS") {
+        trackConfirmBidFailed(bidderId, [
+          "ConfirmBidCreateBidderPositionMutation failed",
+        ])
+      } else {
+        const positionId = results.createBidderPosition.result.position.id
+        trackConfirmBidSuccess(positionId, bidderId)
+        const { isWinning } = await pollBidResult(
+          results.createBidderPosition.result.position.id
+        )
+        if (isWinning) {
+          console.log("they are 'winning' ;) ")
           window.location.assign(
-            `${sd.APP_URL}/auction/${sale.id}/artwork/${artwork.id}`
+            `${sd.APP_URL}/auction/${sale.id}/artwork/${artwork.id}/confirm-bid`
           )
+        } else {
+          console.log("not winning")
         }
-      })
-      .catch(error => {
-        handleMutationError(actions, error, bidderId)
-      })
-      .finally(() => {
-        actions.setSubmitting(false)
-      })
+      }
+    } catch (error) {
+      handleMutationError(actions, error, bidderId)
+    }
+    actions.setSubmitting(false)
+  }
+
+  function pollBidResult(bidderPositionId: string) {
+    return new Promise<{ isWinning: boolean }>((resolve, reject) => {
+      console.log("TODO: implement polling for the actual result")
+      resolve({ isWinning: true })
+    })
   }
 
   return (
